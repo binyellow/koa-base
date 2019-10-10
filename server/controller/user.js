@@ -1,29 +1,19 @@
-// import user from '../models/user';
-// import { successResponse, failedResponse } from '../utils/response';
+import { successResponse, failedResponse } from "../utils/response";
+import { query } from "../db/init";
+import { sql2 } from "../sql";
 
-// async function register(ctx, next) {
-//   const { name } = ctx.request.body;
-//   const res = await user.findOne({ name });
-//   if(res) {
-//     ctx.body = failedResponse({message: '用户名已存在', content: res});
-//   } else {
-//     const add = await user.create(ctx.request.body);
-//     ctx.body = successResponse({message: "注册成功", content: res});
-//   }
-// }
+async function register(ctx, next) {
+  await query(sql2).then(
+    res => {
+      ctx.body = res;
+    },
+    err => {
+      console.log(err);
+    }
+  );
+}
 
-// async function login(ctx) {
-//   const { name, passWord } = ctx.request.body;
-//   const res = await user.findOne({ name });
-//   if(res) {
-//     const passRes = await user.findOne({ name, passWord });
-//     if(passRes) {
-//       ctx.body = successResponse({ message: "登录成功!", content: passRes });
-//     } else {
-//       ctx.body = failedResponse({ message: "密码不正确!" });
-//     }
-//   } else {
-//     ctx.body = failedResponse({ message: '账号不存在!' });
-//   }
-// }
-// module.exports = { register, login }
+async function login(ctx) {
+  ctx.body = 123;
+}
+module.exports = { register, login };

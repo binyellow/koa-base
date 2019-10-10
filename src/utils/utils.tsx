@@ -7,7 +7,7 @@ interface ResponseProps {
   total: number;
 }
 function getResponse(response: any = {}) {
-  if (response && response.data.failed === true) {
+  if (response && response.data && response.data.failed === true) {
     notification.error({
       message: '请求错误',
       description: response.data.message,

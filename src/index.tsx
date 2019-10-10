@@ -11,7 +11,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import reducer from "./reducer";
 import Todo from "./routes/Todo/Todo";
-import Login from "./routes/Login";
+import Generate from "./routes/Generate";
 import WorkSpace from "./routes/WorkSpace";
 import "./index.css";
 
@@ -30,7 +30,7 @@ ReactDOM.render(
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={WorkSpace} />
-          <Route path="/login" component={Login} />
+          <Route path="/generate" component={Generate} />
           <Route path="/todo/:userId" component={Todo} />
           <Redirect from="/huang" to="/login" />
         </Switch>

@@ -3,7 +3,7 @@ const sql1 = "SELECT * FROM `runoob_tbl`";
 const sql2 = `
 select * from information_schema.columns
 where table_schema = 'study'
-and table_name = 'runoob_tbl' ;`;
+and table_name = 'study_table' ;`;
 
 module.exports = {
   sql,

@@ -1,22 +1,26 @@
 import React, { Component } from "react";
 import { Form, Input, Button } from "antd";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
+import { connect } from "react-redux";
 
 import notification from "../../utils/notification";
 import { getResponse } from "../../utils/utils";
 import { register } from "../../services/user";
+import * as columnsActions from "../../actions/columns"; // shadow name problem must to import *
 import { Bind } from "lodash-decorators";
 import styles from "./index.module.less";
 
 interface RegisterProps {
   form: any;
+  addColumns: any;
 }
 
 const FormItem = Form.Item;
-class Register extends Component<RegisterProps & RouteComponentProps> {
+class WorkSpace extends Component<RegisterProps & RouteComponentProps> {
   @Bind()
   public handleRegister() {
     const {
+      addColumns,
       form: { validateFields }
     } = this.props;
     validateFields((err: object, values: object) => {
@@ -24,7 +28,9 @@ class Register extends Component<RegisterProps & RouteComponentProps> {
         register(values).then(res => {
           const result = getResponse(res);
           if (result) {
+            addColumns(result);
             notification.success();
+            this.props.history.push(`/generate`);
           }
         });
       }
@@ -75,4 +81,9 @@ class Register extends Component<RegisterProps & RouteComponentProps> {
   }
 }
 
-export default withRouter(Form.create()(Register));
+export default withRouter(
+  connect(
+    (state: any) => ({ columnsState: state.columns }),
+    { addColumns: columnsActions.addColumns }
+  )(Form.create()(WorkSpace))
+);
