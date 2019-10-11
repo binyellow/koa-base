@@ -45,7 +45,8 @@ class WorkSpace extends Component<RouteComponentProps & RegisterProps> {
         <Form>
           <FormItem label="数据库ip" help>
             {getFieldDecorator("ip", {
-              rules: [{ required: true }]
+              rules: [{ required: true }],
+              initialValue: '127.0.0.1',
             })(<Input />)}
           </FormItem>
           <FormItem label="端口号" help>
@@ -55,12 +56,14 @@ class WorkSpace extends Component<RouteComponentProps & RegisterProps> {
           </FormItem>
           <FormItem label="用户名" help>
             {getFieldDecorator("passWord", {
-              rules: [{ required: true }]
+              rules: [{ required: true }],
+              initialValue: 'root',
             })(<Input />)}
           </FormItem>
           <FormItem label="密码" help>
             {getFieldDecorator("passWord", {
-              rules: [{ required: true }]
+              rules: [{ required: true }],
+              initialValue: 'admin',
             })(<Input />)}
           </FormItem>
           <FormItem>

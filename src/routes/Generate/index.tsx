@@ -6,6 +6,7 @@ import { Bind } from "lodash-decorators";
 import { login } from "../../services/user";
 import notification from "../../utils/notification";
 import { getResponse } from "../../utils/utils";
+import { generator } from "../../services/db";
 
 import styles from "./index.module.less";
 
@@ -35,6 +36,14 @@ class Generate extends Component<RouteComponentProps & LoginProps, any> {
   @Bind()
   public handleLogin() {
     const { columnsNameArr } = this.state;
+    const {
+      columnsState: { columns }
+    } = this.props;
+    generator({
+      columns: columns.filter((item: { COLUMN_NAME: string }) =>
+        columnsNameArr.includes(item.COLUMN_NAME)
+      )
+    });
   }
 
   @Bind()
