@@ -94,9 +94,7 @@ class Todo extends Component<TodoProps & RouteComponentProps, S> {
   }
 }
 
-export default withRouter(
-  connect(
-    (state: any) => ({ todoState: state.todo }),
-    { addTodo: todoActions.addTodo }
-  )(Form.create()(Todo))
-);
+export default connect(
+  (state: any) => ({ todoState: state.todo }),
+  { addTodo: todoActions.addTodo }
+)(Form.create()(Todo))

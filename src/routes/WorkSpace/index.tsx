@@ -16,7 +16,7 @@ interface RegisterProps {
 }
 
 const FormItem = Form.Item;
-class WorkSpace extends Component<RegisterProps & RouteComponentProps> {
+class WorkSpace extends Component<RouteComponentProps & RegisterProps> {
   @Bind()
   public handleRegister() {
     const {
@@ -81,9 +81,7 @@ class WorkSpace extends Component<RegisterProps & RouteComponentProps> {
   }
 }
 
-export default withRouter(
-  connect(
-    (state: any) => ({ columnsState: state.columns }),
-    { addColumns: columnsActions.addColumns }
-  )(Form.create()(WorkSpace))
-);
+export default connect(
+  (state: any) => ({ columnsState: state.columns }),
+  { addColumns: columnsActions.addColumns }
+)(Form.create()(WorkSpace));

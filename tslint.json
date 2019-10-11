@@ -1,23 +1,30 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "build/dist",
     "module": "esnext",
-    "target": "esnext",
-    "lib": ["esnext", "dom"],
+    "target": "es5",
+    "lib": ["es6", "dom"],
     "sourceMap": true,
-    "baseUrl": ".",
+    "allowJs": true,
     "jsx": "react",
-    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    // "rootDir": "src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "importHelpers": true,
+    "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "allowJs": true,
     "experimentalDecorators": true,
-    "strict": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "utils/*": ["./src/utils/*"],
+      "service/*": ["./src/services/*"],
+      "constance/*": ["./src/constance/*"],
+      "actions/*": ["./src/actions/*"]
     }
   },
   "exclude": [
@@ -27,8 +34,6 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts",
-    "tslint:latest",
-    "tslint-config-prettier"
+    "src/setupTests.ts"
   ]
 }

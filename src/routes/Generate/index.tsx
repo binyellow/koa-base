@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form, Input, Button, Tag } from "antd";
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
 import { Bind } from "lodash-decorators";
 import { login } from "../../services/user";
@@ -17,44 +17,58 @@ interface LoginProps {
   history: any;
   columnsState: ColumnsObj;
 }
-interface ConnectState {
-  columnsState: object;
-  loading: object;
-}
+// interface ConnectState {
+//   columnsState: object;
+//   loading: object;
+// }
 const FormItem = Form.Item;
 const { CheckableTag } = Tag;
 
-@connect(({{ login, loading }: ConnectState}) => ({
-  columnsState: state.columns
-}))
-class Generate extends Component<LoginProps> {
+class Generate extends Component<RouteComponentProps & LoginProps, any> {
+  constructor(props: LoginProps & RouteComponentProps) {
+    super(props);
+    this.state = {
+      columnsNameArr: props.columnsState.columns.map((i: any) => i.COLUMN_NAME)
+    };
+  }
+
   @Bind()
   public handleLogin() {
+    const { columnsNameArr } = this.state;
+  }
+
+  @Bind()
+  handleChangeTag(flag: boolean, name: string, allFlag: string = "") {
+    const { columnsNameArr } = this.state;
     const {
-      form: { validateFields }
+      columnsState: { columns }
     } = this.props;
-    validateFields((err: object, values: object) => {
-      if (!err) {
-        login(values).then(res => {
-          const result = getResponse(res);
-          if (result) {
-            const { _id } = result.content;
-            notification.success();
-            const path = {
-              pathname: `/todo/${_id}`
-              // state: {
-              //   name: 'huangbin',
-              //   age: 23
-              // },
-              // search: 'name=huang&age=23'
-            };
-            this.props.history.push(path);
-          }
+    if (allFlag === "all") {
+      console.log(columnsNameArr, columns);
+      if (columns.length === columnsNameArr.length) {
+        this.setState({
+          columnsNameArr: []
+        });
+      } else {
+        this.setState({
+          columnsNameArr: columns.map((i: any) => i.COLUMN_NAME)
         });
       }
-    });
+    } else {
+      let newColumnsNameArr = [];
+      if (flag) {
+        newColumnsNameArr = [...columnsNameArr, name];
+      } else {
+        newColumnsNameArr = columnsNameArr.filter((i: string) => i !== name);
+      }
+      this.setState({
+        columnsNameArr: newColumnsNameArr
+      });
+    }
   }
+
   public render() {
+    const { columnsNameArr } = this.state;
     const {
       form: { getFieldDecorator },
       columnsState: { columns }
@@ -69,22 +83,34 @@ class Generate extends Component<LoginProps> {
               valuePropName: "checked"
             })(
               <div>
+                <CheckableTag
+                  checked={columnsNameArr.length === columns.length}
+                  onChange={() => this.handleChangeTag(true, "", "all")}
+                >
+                  全选
+                </CheckableTag>
                 {columns.map((i: any) => (
-                  <CheckableTag key={i.COLUMN_NAME}>
+                  <CheckableTag
+                    checked={columnsNameArr.includes(i.COLUMN_NAME)}
+                    key={i.COLUMN_NAME}
+                    onChange={value =>
+                      this.handleChangeTag(value, i.COLUMN_NAME)
+                    }
+                  >
                     {i.COLUMN_NAME}
                   </CheckableTag>
                 ))}
               </div>
             )}
           </FormItem>
-          <FormItem label="列表" help>
+          {/* <FormItem label="列表" help>
             {getFieldDecorator("passWord", {
               rules: [{ required: true }]
             })(<Input />)}
-          </FormItem>
+          </FormItem> */}
           <FormItem>
             <Button htmlType="submit" type="primary" onClick={this.handleLogin}>
-              登录
+              下载
             </Button>
           </FormItem>
         </Form>
@@ -95,9 +121,9 @@ class Generate extends Component<LoginProps> {
 
 // export default withRouter(Form.create()(Generate));
 // export default withRouter(
-//   connect(
-//     (state: any) => ({ columnsState: state.columns })
-//     // { addColumns: columnsActions.addColumns }
-//   )(Form.create()(Generate))
+
 // );
-export default Generate;
+export default connect(
+  (state: any) => ({ columnsState: state.columns })
+  // { addColumns: columnsActions.addColumns }
+)(Form.create()(Generate));
